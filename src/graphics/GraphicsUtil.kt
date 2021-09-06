@@ -1,8 +1,9 @@
 package graphics
 
-import java.awt.Graphics
-import java.awt.Graphics2D
+import java.awt.*
 import java.awt.geom.AffineTransform
+import javax.swing.JFrame
+import javax.swing.WindowConstants
 import kotlin.math.atan2
 import kotlin.math.sqrt
 
@@ -28,3 +29,17 @@ fun Graphics.drawArrow(x1: Int, y1: Int, x2: Int, y2: Int) {
     g.drawLine(0, 0, len, 0)
     g.fillPolygon(intArrayOf(len, len - ARR_SIZE, len - ARR_SIZE, len), intArrayOf(0, -ARR_SIZE, ARR_SIZE, 0), 4)
 }
+
+fun canvasFrame(canvas:Component, title : String):JFrame {
+    val frame = JFrame(title)
+    frame.layout = GridLayout(1,1)
+    frame.add(canvas)
+    return frame
+}
+
+fun JFrame.showFrame() = also { isVisible = true }
+fun JFrame.hideFrame() = also { isVisible = false }
+fun JFrame.setDisposeOnClose() = also { defaultCloseOperation = WindowConstants.DISPOSE_ON_CLOSE }
+fun JFrame.setExitOnClose() = also { defaultCloseOperation = WindowConstants.EXIT_ON_CLOSE }
+fun JFrame.maximize() = also { extendedState = extendedState or Frame.MAXIMIZED_BOTH }
+fun JFrame.unmaximize() = also { extendedState = extendedState and Frame.MAXIMIZED_BOTH.inv() }
