@@ -13,7 +13,7 @@ interface Projection : MouseListener, MouseMotionListener, MouseWheelListener, K
     fun drawSetup(g: Graphics)
     fun drawPoint(g: Graphics, point: Vector)
     fun drawLine(g: Graphics, v1: Vector, v2: Vector)
-    fun addAsListener(comp: Component) {
+    fun addAsListenerTo(comp: Component) {
         comp.addMouseListener(this)
         comp.addMouseMotionListener(this)
         comp.addMouseWheelListener(this)
@@ -124,11 +124,11 @@ abstract class AbstractRotationableCenterscalableLinepreservingProjection : Proj
 }
 
 class OrthogonalRCsLpProjection : AbstractRotationableCenterscalableLinepreservingProjection() {
-    override fun pointOnScreen0(point: Vector) = point.x to point.y
+    override fun pointOnScreen0(point: Vector) = point.x to -point.y
 }
 
 class PerspectiveRCsLpProjection(val perspectiveCoeff: Double) :
     AbstractRotationableCenterscalableLinepreservingProjection() {
     override fun pointOnScreen0(point: Vector) =
-        (point.x * perspectiveCoeff.pow(point.z)) to (point.y * perspectiveCoeff.pow(point.z))
+        (point.x * perspectiveCoeff.pow(point.z)) to -(point.y * perspectiveCoeff.pow(point.z))
 }
