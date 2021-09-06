@@ -1,4 +1,5 @@
 @file:Suppress("NOTHING_TO_INLINE")
+
 package mathematics
 
 import kotlin.math.*
@@ -14,14 +15,15 @@ class Quaternion(val a: Double, val v: Vector) {
 
     companion object {
         fun ofAngle(angle: Double, axis: Vector) = cos(angle / 2) + axis.normalized * sin(angle / 2)
-        private val HORIZONTAL_ROTATION_AXIS = Vector(1, 0,0)
-        private val VERTICAL_ROTATION_AXIS = Vector(0, 0,1)
-        fun ofSpherical(horiz : Double, vert : Double) = ofAngle(horiz, HORIZONTAL_ROTATION_AXIS) * ofAngle(vert, VERTICAL_ROTATION_AXIS)
+        private val HORIZONTAL_ROTATION_AXIS = Vector(1, 0, 0)
+        private val VERTICAL_ROTATION_AXIS = Vector(0, 0, 1)
+        fun ofSpherical(horiz: Double, vert: Double) =
+            ofAngle(horiz, HORIZONTAL_ROTATION_AXIS) * ofAngle(vert, VERTICAL_ROTATION_AXIS)
     }
 
     operator fun unaryPlus() = this
 
-    val negated get() = Quaternion(-a, -v)
+    val negated by lazy { Quaternion(-a, -v) }
     inline operator fun unaryMinus() = negated
 
     inline operator fun plus(other: Quaternion) = Quaternion(a + other.a, v + other.v)
@@ -30,9 +32,9 @@ class Quaternion(val a: Double, val v: Vector) {
 
     val norm = a * a + v.norm
     val magnitude = sqrt(norm)
-    val normalized get() = this / magnitude
-    val conjugated inline get() = Quaternion(a, -v)
-    val inverted inline get() = conjugated / norm
+    val normalized by lazy { this / magnitude }
+    val conjugated by lazy { Quaternion(a, -v) }
+    val inverted by lazy { conjugated / norm }
 
     inline operator fun times(other: Quaternion) =
         Quaternion(a * other.a - (v dot other.v), a * other.v + v * other.a + (v x other.v))
